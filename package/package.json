@@ -6,8 +6,8 @@
     "name": "王冬"
   },
   "scripts": {
-    "dev": "webpack serve --mode development --env development --config build/webpack.config.js",
-    "build": "cross-env NODE_ENV=production webpack --mode production --config build/webpack.config.js",
+    "dev": "webpack --mode development --env development --watch --config webpack.config.js",
+    "build": "cross-env NODE_ENV=production webpack --mode production --config webpack.config.js",
     "lint": "eslint --fix --ext .js,.jsx,.vue src"
   },
   "devDependencies": {

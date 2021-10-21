@@ -163,7 +163,7 @@
 
 <script>
     import axios from 'axios';
-    import FormInput from './form_item/form_input';
+    import FormInput from './form_item/form_input.vue';
     import FormTextarea from './form_item/form_textarea';
     import FormDictSelect from './form_item/form_dict_select';
     import FormNormalSelect from './form_item/form_normal_select';
@@ -181,7 +181,7 @@
     import TableReadonly from './form_item/table_readonly';
 
     import ChildForm from './child_form';
-    import FormMixin from './mixin';
+    import FormMixin from './mixin.js';
 
     export default {
         name: 'WtiForm',
@@ -305,7 +305,8 @@
         methods: {
             // 监听值更新
             valueUpdateEvent (params) {
-                this.$emit('updateValue', params);
+                console.log('zzzz')
+                this.$emit('update', params);
             },
 
             // 初始化 formData 的值
@@ -482,6 +483,7 @@
                     // 未禁用则跳过。已经禁用，则继续
                     const index = this.changeData.disableList.indexOf(key);
                     if (index > -1) {
+                        //todo: 直接使用splice就可以了
                         this.changeData.disableList = [
                             ...this.changeData.disableList.slice(0, index),
                             ...this.changeData.disableList.slice(index + 1)
@@ -977,6 +979,10 @@
             TableReadonly,
             ChildForm,
         },
+
+        mounted() {
+            console.log(this.props)
+        }
     };
 </script>
 

@@ -146,6 +146,13 @@ export default {
             }
         },
 
+        onChange (item, e) {
+            // 表单要素有 onChange 事件，那么则触发
+            if (item.onChange) {
+                item.onChange(e, this.formData);
+            }
+        },
+
         // 数值联动，部分自定义 setter 触发。
         _valueLink (v) {
             // 根据当前是普通表单还是子表单，走不同的联动逻辑
