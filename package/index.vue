@@ -214,6 +214,12 @@
                 type: Boolean,
                 default: false,
             },
+            extraConfig: {
+                type: Object,
+                default: () => ({
+                    initFormDataSilently: false, //默默初始化formdata， 不会触发父组件的updatevalue的事件
+                })
+            }
             // 数据字典的配置
         },
         data () {
@@ -265,7 +271,7 @@
                     this.getDefaultDisableList();
                     this.getDefaultHiddenList();
                     this.loadDynamicSelectOptions();
-                    this.initFormData();
+                    this.initFormData({initFormDataSilently: false});
                     this.initStatus();
                 });
             });
@@ -310,7 +316,9 @@
             },
 
             // 初始化 formData 的值
-            initFormData () {
+            initFormData ({initFormDataSilently = false} = {}) {
+                //全局与局部的标志位initFormDataSilently，决定初始化后是否需要提醒父组件
+                initFormDataSilently = this.extraConfig?.initFormDataSilently || initFormDataSilently;
                 this.$set(this, 'formData', {});
                 // console.log('initFormData');
                 // 用 fileds 初始化 formData 的 key
@@ -322,7 +330,7 @@
                             if (field.key in this.data) {
                                 this.$set(this.formData, field.key, this.data[field.key]);
                                 // 赋值默认值的时候，触发事件通知上级
-                                this.valueUpdateEvent({
+                                !initFormDataSilently && this.valueUpdateEvent({
                                     [field.key]: this.data[field.key],
                                 });
                             } else {
@@ -331,7 +339,7 @@
                                 if (field.defaultValue) {
                                     this.$set(this.formData, field.key, field.defaultValue);
                                     // 赋值默认值的时候，触发事件通知上级
-                                    this.valueUpdateEvent({
+                                    !initFormDataSilently && this.valueUpdateEvent({
                                         [field.key]: field.defaultValue,
                                     });
                                 } else {

@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# 打包文件
+index-build/
+
+#webpack 生成的文件
+package/index.html
