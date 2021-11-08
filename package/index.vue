@@ -135,6 +135,15 @@
                                             <FormNormalNumberInput v-if="rowItem.type==='normal-number'"
                                                                    v-bind="getProps(rowItem)"
                                                                    v-model.trim="formData[rowItem.key]"/>
+                                            <FormSlot
+                                                v-if="rowItem.type==='slot'"
+                                                v-bind="getProps(rowItem)"
+                                                v-model="formData[rowItem.key]">
+                                                <template v-slot:[rowItem.slotName]="slotProps">
+                                                    <div>test</div>
+                                                    <slot :name="rowItem.slotName" v-bind="slotProps"></slot>
+                                                </template>
+                                            </FormSlot>
                                         </el-form-item>
 
                                         <ChildForm v-if="rowItem.type === 'child-form'"
@@ -178,9 +187,10 @@
     import FormAreaSelect from './form_item/form_area_select';
     import FormMulLinkage from './form_item/form_mul_linkage';
     import FormNormalNumberInput from './form_item/form_normal_number_input';
-    import TableReadonly from './form_item/table_readonly';
+    import FormSlot from './form_item/form_slot';
+    import TableReadonly from './form_item/table_readonly.vue';
 
-    import ChildForm from './child_form';
+    import ChildForm from './child_form.vue';
     import FormMixin from './mixin.js';
 
     export default {
@@ -983,6 +993,7 @@
             FormAreaSelect,
             FormMulLinkage,
             FormNormalNumberInput,
+            FormSlot,
 
             TableReadonly,
             ChildForm,
