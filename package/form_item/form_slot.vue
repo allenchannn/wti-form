@@ -1,16 +1,18 @@
 <template>
     <div>
-        <slot
-            :name="item.slotName"
-            @input="(v) => val = v"
-            :value="val"
-            :disabled="getDisabled"
+        <component
+            :is="item.component"
+            @input="v => val = v"
             v-bind="bindOptions"
+            :disabled="getDisabled"
+            :value="val"
         />
     </div>
 </template>
 
 <script>
+
+    //外部组件在值修改时需要通过emit input事件来通知form_slot，并将值传给父组件
     import FormMixin from './mixin';
 
     export default {
@@ -33,21 +35,25 @@
 
         computed: {
             val: {
-                get: function() {
+                get () {
                     return this.value;
                 },
-
-                set: function(v) {
-                    //修改formData
+                set (v) {
+                    //改变formData
                     this.$emit('input', v);
-                    //使用mixin/_valueLink中的方法触发表单数值联动
+                    //执行联动函数
                     this._valueLink(v);
-                }
-            }
-        },
-
-        mounted () {
-            console.log(this.item.slotName, 'item.slotName')
+                    // 只有非子表单的情况下，才会冒泡上去数据变更
+                    if (this.formItemType !== 'childForm') {
+                        this.statusChangeFn.valueUpdateEvent({
+                            [this.item.key]: v,
+                        });
+                    } else {
+                        // 如果是子表单的话，执行内置的变更
+                        this.childChangeData.valueUpdateEvent();
+                    }
+                },
+            },
         }
     }
 </script>

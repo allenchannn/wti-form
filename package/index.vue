@@ -139,10 +139,6 @@
                                                 v-if="rowItem.type==='slot'"
                                                 v-bind="getProps(rowItem)"
                                                 v-model="formData[rowItem.key]">
-                                                <template v-slot:[rowItem.slotName]="slotProps">
-                                                    <div>test</div>
-                                                    <slot :name="rowItem.slotName" v-bind="slotProps"></slot>
-                                                </template>
                                             </FormSlot>
                                         </el-form-item>
 
